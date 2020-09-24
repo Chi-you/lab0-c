@@ -13,8 +13,11 @@ queue_t *q_new()
 {
     queue_t *q = malloc(sizeof(queue_t));
     /* TODO: What if malloc returned NULL? */
-    q->head = NULL;
-    return q;
+    if (q) {
+        q->head = NULL;
+        return q;
+    } else
+        return NULL;
 }
 
 /* Free all storage used by queue */
@@ -39,9 +42,18 @@ bool q_insert_head(queue_t *q, char *s)
     newh = malloc(sizeof(list_ele_t));
     /* Don't forget to allocate space for the string and copy it */
     /* What if either call to malloc returns NULL? */
-    newh->next = q->head;
-    q->head = newh;
-    return true;
+    if (!newh)
+        return false;
+    else {
+        newh->value = s;
+        if (q->size == 0) {
+            q->head = newh;
+        } else {
+            newh->next = q->head;
+            q->head = newh;
+        }
+        return true;
+    }
 }
 
 /*
@@ -81,10 +93,7 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
  */
 int q_size(queue_t *q)
 {
-    /* TODO: You need to write the code for this function */
-    /* Remember: It should operate in O(1) time */
-    /* TODO: Remove the above comment when you are about to implement. */
-    return 0;
+    return (q) ? q->size : 0;
 }
 
 /*
